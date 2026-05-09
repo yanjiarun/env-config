@@ -122,6 +122,7 @@ sudo apt install wireshark
 - [mavros_msgs 官方文档](https://docs.ros.org/en/humble/p/mavros_msgs/) - `https://docs.ros.org/en/humble/p/mavros_msgs/`
 - [MAVROS 官方文档](https://docs.ros.org/en/humble/p/mavros/) - `https://docs.ros.org/en/humble/p/mavros/`
 - [PX4 官方文档](https://docs.px4.io/main/zh/) - `https://docs.px4.io/main/zh/`
+- [PX4 参数参考](https://docs.px4.io/main/en/advanced_config/parameter_reference#parameter-reference) - `https://docs.px4.io/main/en/advanced_config/parameter_reference#parameter-reference`
 - [PX4 Gazebo 模型仓库](https://github.com/PX4/PX4-gazebo-models) - `https://github.com/PX4/PX4-gazebo-models`
 - [PX4 Gazebo 仿真 官方文档](https://docs.px4.io/main/zh/sim_gazebo_gz/) - `https://docs.px4.io/main/zh/sim_gazebo_gz/`
 - [Gazebo Harmonic 官方文档](https://gazebosim.org/docs/harmonic/) - `https://gazebosim.org/docs/harmonic/`
@@ -292,6 +293,11 @@ PX4_SIM_MODEL=${PX4_SIM_MODEL:=rc_cessna_gimbal}
 
 . ${R}etc/init.d-posix/airframes/4003_gz_rc_cessna
 
+# Disable the Data Link Loss (DLL) failsafe action (NAV_DLL_ACT = 0)
+param set-default NAV_DLL_ACT 0
+# Disable the RC Link Loss (RCL) failsafe action (NAV_RCL_ACT = 0)
+param set-default NAV_RCL_ACT 0
+
 # Gimbal settings
 param set-default MNT_MODE_IN 4
 param set-default MNT_MODE_OUT 2
@@ -306,6 +312,7 @@ param set-default MNT_MAX_PITCH 45
 param set-default MNT_MIN_PITCH -135
 param set-default MNT_RANGE_YAW 720
 ```
+`注：设置NAV_DLL_ACT=0 表示禁用数据链丢失失败操作，可实现无需连接QGroundControl(QGC)就能解锁；设置NAV_RCL_ACT=0 表示禁用RC链丢失失败操作，可实现无RC链也能切Mission模式。`
 
 并为机架添加 CMake 编译目标，即在~/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt文件中添加一行：
 ```bash
